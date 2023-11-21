@@ -79,7 +79,7 @@ controller_interface::CallbackReturn IMUSensorBroadcaster::on_configure(
     }
     else
     {
-      tf_prefix = tf_prefix + "_";
+      tf_prefix = tf_prefix + "/";
     }
   }
 
