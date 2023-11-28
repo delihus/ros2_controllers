@@ -394,8 +394,6 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
 
   // Append the tf prefix if there is one
   std::string tf_prefix = "";
-  RCLCPP_WARN(
-              get_node()->get_logger(), "TF PREFOX: %d", params_.tf_frame_prefix_enable);
   if (params_.tf_frame_prefix_enable)
   {
     if (params_.tf_frame_prefix != "")
@@ -416,7 +414,6 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
       tf_prefix = tf_prefix + "/";
     }
   }
-
 
   auto odom_frame_id = params_.odom_frame_id;
   auto base_frame_id = params_.base_frame_id;
