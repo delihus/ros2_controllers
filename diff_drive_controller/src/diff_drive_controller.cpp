@@ -394,6 +394,8 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
 
   // Append the tf prefix if there is one
   std::string tf_prefix = "";
+  RCLCPP_WARN(
+              get_node()->get_logger(), "TF PREFOX: %d", params_.tf_frame_prefix_enable);
   if (params_.tf_frame_prefix_enable)
   {
     if (params_.tf_frame_prefix != "")
@@ -415,16 +417,21 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
     }
   }
 
-  const auto odom_frame_id = tf_prefix + params_.odom_frame_id;
-  const auto base_frame_id = tf_prefix + params_.base_frame_id;
 
-  for (auto & joint_name : params_.left_wheel_names)
-  {
-    joint_name = tf_prefix + joint_name;
-  }
-  for (auto & joint_name : params_.right_wheel_names)
-  {
-    joint_name = tf_prefix + joint_name;
+  auto odom_frame_id = params_.odom_frame_id;
+  auto base_frame_id = params_.base_frame_id;
+
+  if(params_.tf_frame_prefix_enable){
+    odom_frame_id = tf_prefix + odom_frame_id;
+    base_frame_id = tf_prefix + base_frame_id;
+    for (auto & joint_name : params_.left_wheel_names)
+    {
+      joint_name = tf_prefix + joint_name;
+    }
+    for (auto & joint_name : params_.right_wheel_names)
+    {
+      joint_name = tf_prefix + joint_name;
+    }
   }
 
   auto & odometry_message = realtime_odometry_publisher_->msg_;
