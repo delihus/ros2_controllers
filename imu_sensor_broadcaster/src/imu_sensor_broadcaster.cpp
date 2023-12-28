@@ -45,8 +45,21 @@ controller_interface::CallbackReturn IMUSensorBroadcaster::on_configure(
 {
   params_ = param_listener_->get_params();
 
+  auto namespace_for_sensor_name = std::string(get_node()->get_namespace());;
+  if(namespace_for_sensor_name[0] == '/'){
+    namespace_for_sensor_name.erase(0, 1);
+  }
+  if (namespace_for_sensor_name == "/")
+  {
+    namespace_for_sensor_name = "";
+  }
+  else
+  {
+    namespace_for_sensor_name = namespace_for_sensor_name + "/";
+  }
+
   imu_sensor_ = std::make_unique<semantic_components::IMUSensor>(
-    semantic_components::IMUSensor(params_.sensor_name));
+    semantic_components::IMUSensor(namespace_for_sensor_name + params_.sensor_name));
   try
   {
     // register ft sensor data publisher
