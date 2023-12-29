@@ -29,15 +29,8 @@
 // subclassing and friending so we can access member variables
 class FriendIMUSensorBroadcaster : public imu_sensor_broadcaster::IMUSensorBroadcaster
 {
-  FRIEND_TEST(IMUSensorBroadcasterTest, SensorNameParameterNotSet);
-  FRIEND_TEST(IMUSensorBroadcasterTest, InterfaceNamesParameterNotSet);
-  FRIEND_TEST(IMUSensorBroadcasterTest, FrameIdParameterNotSet);
-  FRIEND_TEST(IMUSensorBroadcasterTest, SensorNameParameterIsEmpty);
-  FRIEND_TEST(IMUSensorBroadcasterTest, InterfaceNameParameterIsEmpty);
-
-  FRIEND_TEST(IMUSensorBroadcasterTest, ActivateSuccess);
-  FRIEND_TEST(IMUSensorBroadcasterTest, UpdateTest);
-  FRIEND_TEST(IMUSensorBroadcasterTest, SensorStatePublishTest);
+  FRIEND_TEST(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Success);
+  FRIEND_TEST(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Fail);
 };
 
 class IMUSensorBroadcasterTest : public ::testing::Test
@@ -49,11 +42,12 @@ public:
   void SetUp();
   void TearDown();
 
-  void SetUpIMUBroadcaster();
+  void SetUpIMUBroadcaster(const std::string &node_namespace = "");
 
 protected:
   const std::string sensor_name_ = "imu_sensor";
   const std::string frame_id_ = "imu_sensor_frame";
+  const std::string namespace_ = "robot";
   std::array<double, 10> sensor_values_ = {1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9, 10.10};
   hardware_interface::StateInterface imu_orientation_x_{
     sensor_name_, "orientation.x", &sensor_values_[0]};
