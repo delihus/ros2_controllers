@@ -237,16 +237,16 @@ TEST_F(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Success)
 
   auto interface_names = imu_broadcaster_->imu_sensor_->get_state_interface_names();
 
-  EXPECT_EQ(interface_names[0], "/" + namespace_ + "/" + imu_orientation_x_.get_name());
-  EXPECT_EQ(interface_names[1], "/" + namespace_ + "/" + imu_orientation_y_.get_name());
-  EXPECT_EQ(interface_names[2], "/" + namespace_ + "/" + imu_orientation_z_.get_name());
-  EXPECT_EQ(interface_names[3], "/" + namespace_ + "/" + imu_orientation_w_.get_name());
-  EXPECT_EQ(interface_names[4], "/" + namespace_ + "/" + imu_angular_velocity_x_.get_name());
-  EXPECT_EQ(interface_names[5], "/" + namespace_ + "/" + imu_angular_velocity_y_.get_name());
-  EXPECT_EQ(interface_names[6], "/" + namespace_ + "/" + imu_angular_velocity_z_.get_name());
-  EXPECT_EQ(interface_names[7], "/" + namespace_ + "/" + imu_linear_acceleration_x_.get_name());
-  EXPECT_EQ(interface_names[8], "/" + namespace_ + "/" + imu_linear_acceleration_y_.get_name());
-  EXPECT_EQ(interface_names[9], "/" + namespace_ + "/" + imu_linear_acceleration_z_.get_name());
+  EXPECT_EQ(interface_names[0], namespace_ + "/" + imu_orientation_x_.get_name());
+  EXPECT_EQ(interface_names[1], namespace_ + "/" + imu_orientation_y_.get_name());
+  EXPECT_EQ(interface_names[2], namespace_ + "/" + imu_orientation_z_.get_name());
+  EXPECT_EQ(interface_names[3], namespace_ + "/" + imu_orientation_w_.get_name());
+  EXPECT_EQ(interface_names[4], namespace_ + "/" + imu_angular_velocity_x_.get_name());
+  EXPECT_EQ(interface_names[5], namespace_ + "/" + imu_angular_velocity_y_.get_name());
+  EXPECT_EQ(interface_names[6], namespace_ + "/" + imu_angular_velocity_z_.get_name());
+  EXPECT_EQ(interface_names[7], namespace_ + "/" + imu_linear_acceleration_x_.get_name());
+  EXPECT_EQ(interface_names[8], namespace_ + "/" + imu_linear_acceleration_y_.get_name());
+  EXPECT_EQ(interface_names[9], namespace_ + "/" + imu_linear_acceleration_z_.get_name());
 }
 
 TEST_F(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Fail)
