@@ -52,7 +52,7 @@ void IMUSensorBroadcasterTest::SetUp()
 
 void IMUSensorBroadcasterTest::TearDown() { imu_broadcaster_.reset(nullptr); }
 
-void IMUSensorBroadcasterTest::SetUpIMUBroadcaster(const std::string &node_namespace)
+void IMUSensorBroadcasterTest::SetUpIMUBroadcaster(const std::string & node_namespace)
 {
   const auto result = imu_broadcaster_->init("test_imu_sensor_broadcaster", node_namespace);
   ASSERT_EQ(result, controller_interface::return_type::OK);
@@ -190,7 +190,6 @@ TEST_F(IMUSensorBroadcasterTest, FramePrefixesTrue_Publish_Success)
   imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix_enable", true});
   imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix", "imu1"});
 
-
   ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
   ASSERT_EQ(imu_broadcaster_->on_activate(rclcpp_lifecycle::State()), NODE_SUCCESS);
 
@@ -199,7 +198,6 @@ TEST_F(IMUSensorBroadcasterTest, FramePrefixesTrue_Publish_Success)
 
   EXPECT_EQ(imu_msg.header.frame_id, "imu1/" + frame_id_);
 }
-
 
 TEST_F(IMUSensorBroadcasterTest, FramePrefixesFalse_Publish_Success)
 {
@@ -211,7 +209,6 @@ TEST_F(IMUSensorBroadcasterTest, FramePrefixesFalse_Publish_Success)
 
   imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix_enable", false});
   imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix", "imu1"});
-
 
   ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
   ASSERT_EQ(imu_broadcaster_->on_activate(rclcpp_lifecycle::State()), NODE_SUCCESS);
@@ -231,7 +228,6 @@ TEST_F(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Success)
   imu_broadcaster_->get_node()->set_parameter({"frame_id", frame_id_});
 
   imu_broadcaster_->get_node()->set_parameter({"use_namespace_as_sensor_name_prefix", true});
-
 
   ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
 
@@ -258,7 +254,6 @@ TEST_F(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Fail)
   imu_broadcaster_->get_node()->set_parameter({"frame_id", frame_id_});
 
   imu_broadcaster_->get_node()->set_parameter({"use_namespace_as_sensor_name_prefix", false});
-
 
   ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
 

@@ -418,7 +418,8 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
   auto odom_frame_id = params_.odom_frame_id;
   auto base_frame_id = params_.base_frame_id;
 
-  if(params_.tf_frame_prefix_enable){
+  if (params_.tf_frame_prefix_enable)
+  {
     odom_frame_id = tf_prefix + odom_frame_id;
     base_frame_id = tf_prefix + base_frame_id;
     for (auto & joint_name : params_.left_wheel_names)

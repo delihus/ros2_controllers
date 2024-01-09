@@ -42,7 +42,7 @@ public:
   void SetUp();
   void TearDown();
 
-  void SetUpIMUBroadcaster(const std::string &node_namespace = "");
+  void SetUpIMUBroadcaster(const std::string & node_namespace = "");
 
 protected:
   const std::string sensor_name_ = "imu_sensor";
