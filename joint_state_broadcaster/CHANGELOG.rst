@@ -2,6 +2,20 @@
 Changelog for package joint_state_broadcaster
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.30.0 (2023-12-20)
+-------------------
+
+2.29.0 (2023-12-05)
+-------------------
+
+2.28.0 (2023-11-30)
+-------------------
+* joint_state_broadcaster: Add proper subscription to TestCustomInterfaceMappingUpdate (`#859 <https://github.com/ros-controls/ros2_controllers/issues/859>`_) (`#863 <https://github.com/ros-controls/ros2_controllers/issues/863>`_)
+* Contributors: mergify[bot]
+
+2.27.0 (2023-11-14)
+-------------------
+
 2.26.0 (2023-10-03)
 -------------------
 

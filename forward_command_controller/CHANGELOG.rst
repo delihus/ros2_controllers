@@ -2,6 +2,20 @@
 Changelog for package forward_command_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.30.0 (2023-12-20)
+-------------------
+
+2.29.0 (2023-12-05)
+-------------------
+
+2.28.0 (2023-11-30)
+-------------------
+* Rearrange controllers overview page (`#846 <https://github.com/ros-controls/ros2_controllers/issues/846>`_) (`#847 <https://github.com/ros-controls/ros2_controllers/issues/847>`_)
+* Contributors: mergify[bot]
+
+2.27.0 (2023-11-14)
+-------------------
+
 2.26.0 (2023-10-03)
 -------------------
 * [Doc] Add specific documentation on the available fw cmd controllers (`#765 <https://github.com/ros-controls/ros2_controllers/issues/765>`_) (`#778 <https://github.com/ros-controls/ros2_controllers/issues/778>`_)
