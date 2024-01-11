@@ -1,4 +1,4 @@
-test_imu_sensor_broadcaster:
+/**/test_imu_sensor_broadcaster:
   ros__parameters:
 
     sensor_name: "imu_sensor"

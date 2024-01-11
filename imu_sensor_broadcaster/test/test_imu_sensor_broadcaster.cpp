@@ -52,9 +52,9 @@ void IMUSensorBroadcasterTest::SetUp()
 
 void IMUSensorBroadcasterTest::TearDown() { imu_broadcaster_.reset(nullptr); }
 
-void IMUSensorBroadcasterTest::SetUpIMUBroadcaster()
+void IMUSensorBroadcasterTest::SetUpIMUBroadcaster(const std::string & node_namespace)
 {
-  const auto result = imu_broadcaster_->init("test_imu_sensor_broadcaster");
+  const auto result = imu_broadcaster_->init("test_imu_sensor_broadcaster", node_namespace);
   ASSERT_EQ(result, controller_interface::return_type::OK);
 
   std::vector<LoanedStateInterface> state_ifs;
@@ -177,6 +177,98 @@ TEST_F(IMUSensorBroadcasterTest, SensorName_Publish_Success)
     EXPECT_EQ(imu_msg.angular_velocity_covariance[i], 0.0);
     EXPECT_EQ(imu_msg.linear_acceleration_covariance[i], 0.0);
   }
+}
+
+TEST_F(IMUSensorBroadcasterTest, FramePrefixesTrue_Publish_Success)
+{
+  SetUpIMUBroadcaster();
+
+  // set the params 'sensor_name' and 'frame_id'
+  imu_broadcaster_->get_node()->set_parameter({"sensor_name", sensor_name_});
+  imu_broadcaster_->get_node()->set_parameter({"frame_id", frame_id_});
+
+  imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix_enable", true});
+  imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix", "imu1"});
+
+  ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
+  ASSERT_EQ(imu_broadcaster_->on_activate(rclcpp_lifecycle::State()), NODE_SUCCESS);
+
+  sensor_msgs::msg::Imu imu_msg;
+  subscribe_and_get_message(imu_msg);
+
+  EXPECT_EQ(imu_msg.header.frame_id, "imu1/" + frame_id_);
+}
+
+TEST_F(IMUSensorBroadcasterTest, FramePrefixesFalse_Publish_Success)
+{
+  SetUpIMUBroadcaster();
+
+  // set the params 'sensor_name' and 'frame_id'
+  imu_broadcaster_->get_node()->set_parameter({"sensor_name", sensor_name_});
+  imu_broadcaster_->get_node()->set_parameter({"frame_id", frame_id_});
+
+  imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix_enable", false});
+  imu_broadcaster_->get_node()->set_parameter({"tf_frame_prefix", "imu1"});
+
+  ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
+  ASSERT_EQ(imu_broadcaster_->on_activate(rclcpp_lifecycle::State()), NODE_SUCCESS);
+
+  sensor_msgs::msg::Imu imu_msg;
+  subscribe_and_get_message(imu_msg);
+
+  EXPECT_EQ(imu_msg.header.frame_id, frame_id_);
+}
+
+TEST_F(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Success)
+{
+  SetUpIMUBroadcaster(namespace_);
+
+  imu_broadcaster_->get_node()->set_parameter({"sensor_name", sensor_name_});
+
+  imu_broadcaster_->get_node()->set_parameter({"frame_id", frame_id_});
+
+  imu_broadcaster_->get_node()->set_parameter({"use_namespace_as_sensor_name_prefix", true});
+
+  ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
+
+  auto interface_names = imu_broadcaster_->imu_sensor_->get_state_interface_names();
+
+  EXPECT_EQ(interface_names[0], namespace_ + "/" + imu_orientation_x_.get_name());
+  EXPECT_EQ(interface_names[1], namespace_ + "/" + imu_orientation_y_.get_name());
+  EXPECT_EQ(interface_names[2], namespace_ + "/" + imu_orientation_z_.get_name());
+  EXPECT_EQ(interface_names[3], namespace_ + "/" + imu_orientation_w_.get_name());
+  EXPECT_EQ(interface_names[4], namespace_ + "/" + imu_angular_velocity_x_.get_name());
+  EXPECT_EQ(interface_names[5], namespace_ + "/" + imu_angular_velocity_y_.get_name());
+  EXPECT_EQ(interface_names[6], namespace_ + "/" + imu_angular_velocity_z_.get_name());
+  EXPECT_EQ(interface_names[7], namespace_ + "/" + imu_linear_acceleration_x_.get_name());
+  EXPECT_EQ(interface_names[8], namespace_ + "/" + imu_linear_acceleration_y_.get_name());
+  EXPECT_EQ(interface_names[9], namespace_ + "/" + imu_linear_acceleration_z_.get_name());
+}
+
+TEST_F(IMUSensorBroadcasterTest, SensorNameNamespaced_Configure_Fail)
+{
+  SetUpIMUBroadcaster(namespace_);
+
+  imu_broadcaster_->get_node()->set_parameter({"sensor_name", sensor_name_});
+
+  imu_broadcaster_->get_node()->set_parameter({"frame_id", frame_id_});
+
+  imu_broadcaster_->get_node()->set_parameter({"use_namespace_as_sensor_name_prefix", false});
+
+  ASSERT_EQ(imu_broadcaster_->on_configure(rclcpp_lifecycle::State()), NODE_SUCCESS);
+
+  auto interface_names = imu_broadcaster_->imu_sensor_->get_state_interface_names();
+
+  EXPECT_EQ(interface_names[0], imu_orientation_x_.get_name());
+  EXPECT_EQ(interface_names[1], imu_orientation_y_.get_name());
+  EXPECT_EQ(interface_names[2], imu_orientation_z_.get_name());
+  EXPECT_EQ(interface_names[3], imu_orientation_w_.get_name());
+  EXPECT_EQ(interface_names[4], imu_angular_velocity_x_.get_name());
+  EXPECT_EQ(interface_names[5], imu_angular_velocity_y_.get_name());
+  EXPECT_EQ(interface_names[6], imu_angular_velocity_z_.get_name());
+  EXPECT_EQ(interface_names[7], imu_linear_acceleration_x_.get_name());
+  EXPECT_EQ(interface_names[8], imu_linear_acceleration_y_.get_name());
+  EXPECT_EQ(interface_names[9], imu_linear_acceleration_z_.get_name());
 }
 
 int main(int argc, char ** argv)
